@@ -36,15 +36,19 @@ class CountdownClock extends Component {
 				this.handleBreak()
 				
 			} else if(this.state.seconds === 0){
-					this.setState({
-						seconds: 60
+					this.setState((currentState) => {
+						return{
+							seconds: 60
+						}
 					})
 					this.state.minutes -= 1;
 			}
 
-			this.setState({
-				seconds: this.state.seconds -= 1,
-				playState: true
+			this.setState((currentState) => {
+				return{
+					seconds: currentState.seconds -= 1,
+					playState: true
+				}
 			})
 		}, 100)
 	}
@@ -65,14 +69,18 @@ class CountdownClock extends Component {
 				})
 				this.handleClock()
 			} else if(this.state.seconds === 1){
-					this.setState({
-						seconds: 60
+					this.setState((currentState) => {
+						return {
+							seconds: 60
+						}
 					})
 					this.state.minutes -= 1;
 			}
 			else{
-				this.setState({
-					seconds: this.state.seconds -= 1,
+				this.setState((currentState) => {
+					return{
+						seconds: currentState.seconds -= 1,
+						}
 					})
 				}
 			}, 200)
@@ -99,37 +107,45 @@ class CountdownClock extends Component {
 
 	incSessLen(){
 		if(this.state.sessLen < 60 && !this.state.playState){
-			this.setState({
-				sessLen: this.state.sessLen += 1,
-				minutes: this.state.sessLen,
-				seconds: 0
+			this.setState((currentState) => {
+				return{
+					sessLen: currentState.sessLen += 1,
+					minutes: currentState.sessLen,
+					seconds: 0
+				}
 			})	
 		} 
 	}
 
 	decSessLen(){
 		if(this.state.brkLen > 1 && !this.state.playState){
-			this.setState({
-			sessLen: this.state.sessLen -= 1,
-			minutes: this.state.sessLen,
-			seconds: 0
-		})
+			this.setState((currentState) => {
+				return{
+					sessLen: currentState.sessLen -= 1,
+					minutes: currentState.sessLen,
+					seconds: 0
+				}
+			})
 		} 
 		
 	}
 
 	incBrkLen(){
 		if(this.state.brkLen < 60 && !this.state.playState){	
-			this.setState({
-				brkLen: this.state.brkLen += 1
+			this.setState((currentState) => {
+				return {
+					brkLen: currentState.brkLen += 1
+				}
 			})
 		}
 	}
 
 	decBrkLen(){
 		if(this.state.brkLen > 1 && !this.state.playState){
-			this.setState({
-				brkLen: this.state.brkLen -= 1
+			this.setState((currentState) => {
+				return {
+					brkLen: currentState.brkLen -= 1
+				}
 			})
 		}
 	}
@@ -138,7 +154,6 @@ class CountdownClock extends Component {
 	render(){
 
 		const { minutes, seconds, sessLen, brkLen } = this.state;
-		let then = this.state.now + 2 * 1000
 		return(
 			<div style={{ textAlign: 'center'}}>
 				<BreakLength decBrkLen={this.decBrkLen} incBrkLen={this.incBrkLen} brkLen={brkLen}/>
