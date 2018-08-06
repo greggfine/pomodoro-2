@@ -7,9 +7,9 @@ class App extends Component {
   render() {
     return (
       <div>
-        <h1>Pomodoro Clock</h1> 
+        {/* <h1>Pomodoro Clock</h1>  */}
         <CountdownClock />
-        <audio src="./old-fashioned-door-bell-daniel_simon.mp3" autoPlay controls></audio>
+       {/* <audio src="./old-fashioned-door-bell-daniel_simon.mp3" autoPlay controls></audio> */}
 
       </div>
     );

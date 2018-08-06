@@ -1,11 +1,12 @@
 import React from 'react';
 
-const Transport = ({ handleClock, pauseClock, resetClock }) => {
+const Transport = ({ toggleClock, resetClock, playState }) => {
 	return (
 		<div>
-				<button onClick={handleClock}>Play</button>
-				<button onClick={pauseClock}>Pause</button>
-				<button onClick={resetClock}>Reset</button>
+				<button id="start_stop" onClick={toggleClock}>
+					{ playState? this.textContent = 'pause':'play' }
+				</button>
+				<button id="reset" onClick={resetClock}>Reset</button>
 		</div>
 	)
 }

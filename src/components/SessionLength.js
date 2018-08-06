@@ -3,10 +3,10 @@ import React from 'react';
 const SessionLength = ({ decSessLen, incSessLen, sessLen }) => {
 	return (
 		<div>
-			<h2>SessionLength</h2>
-			<button onClick={decSessLen}>minus</button>
-			<span>{sessLen}</span>
-			<button onClick={incSessLen}>plus</button>
+			<h2 id="session-label">Session Length</h2>
+			<button id="session-decrement" onClick={decSessLen}>minus</button>
+			<span id="session-length">{sessLen}</span>
+			<button id="session-decrement" onClick={incSessLen}>plus</button>
 		</div>
 	)
 }
