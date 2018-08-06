@@ -9,8 +9,8 @@ class CountdownClock extends Component {
 
 		this.state = {
 			seconds: 0,
-			minutes: 25,
-			sessLen: 25,
+			minutes: 1,
+			sessLen: 1,
 			playState: false,
 			initSeconds: true,
 			brkLen: 1
@@ -20,6 +20,9 @@ class CountdownClock extends Component {
 		this.resetClock = this.resetClock.bind(this)
 		this.incSessLen = this.incSessLen.bind(this)
 		this.decSessLen = this.decSessLen.bind(this)
+		this.incBrkLen = this.incBrkLen.bind(this)
+		this.decBrkLen = this.decBrkLen.bind(this)
+		this.handleBreak = this.handleBreak.bind(this)
 	}
 
 
@@ -33,6 +36,7 @@ class CountdownClock extends Component {
 			this.interval = setInterval(() => {
 				if(this.state.seconds === -59 && this.state.minutes === 0){
 					clearInterval(this.interval)
+					this.handleBreak()
 				}
 
 				if(this.state.seconds === -60 || this.state.seconds === 0){
@@ -49,11 +53,29 @@ class CountdownClock extends Component {
 						}
 					})
 
-			}, 1000)
+			}, 400)
 		} else{
 			clearInterval(this.interval);
 		}
 	}
+
+	handleBreak(){
+		this.setState({
+			minutes: this.state.brkLen,
+			seconds: 0,
+		})
+		setInterval(() => {
+			this.setState((currentState) => {
+					return {
+						seconds: currentState.seconds -= 1,
+						initSeconds: false
+					}
+				})
+
+			}, 1000)
+		}
+			
+	
 
 	resetClock(){
 		clearInterval(this.interval)
@@ -95,9 +117,31 @@ class CountdownClock extends Component {
 	}
 
 
+
+	incBrkLen(){
+		if(this.state.brkLen < 60 && !this.state.playState){	
+			this.setState((currentState) => {
+				return {
+					brkLen: currentState.brkLen += 1
+				}
+			})
+		}
+	}
+
+	decBrkLen(){
+		if(this.state.brkLen > 1 && !this.state.playState){
+			this.setState((currentState) => {
+				return {
+					brkLen: currentState.brkLen -= 1
+				}
+			})
+		}
+	}
+
+
 	render(){
 
-		const { minutes, seconds, sessLen } = this.state;
+		const { minutes, seconds, sessLen, brkLen } = this.state;
 		return(
 			<div style={{ textAlign: 'center'}}>
 
@@ -105,6 +149,12 @@ class CountdownClock extends Component {
 					sessLen={sessLen}
 					incSessLen={this.incSessLen}
 					decSessLen={this.decSessLen}
+				/>
+
+				<BreakLength 
+					brkLen={brkLen}
+					incBrkLen={this.incBrkLen}
+					decBrkLen={this.decBrkLen}
 				/>
 	
 				<h1 id="timer-label">Session</h1>
