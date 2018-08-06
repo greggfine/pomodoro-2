@@ -8,14 +8,18 @@ class CountdownClock extends Component {
 		super(props);
 
 		this.state = {
-			minutes: 3,
 			seconds: 0,
+			minutes: 25,
+			sessLen: 25,
 			playState: false,
-			initSeconds: true
+			initSeconds: true,
+			brkLen: 1
 		}
 
 		this.toggleClock = this.toggleClock.bind(this)
 		this.resetClock = this.resetClock.bind(this)
+		this.incSessLen = this.incSessLen.bind(this)
+		this.decSessLen = this.decSessLen.bind(this)
 	}
 
 
@@ -52,20 +56,56 @@ class CountdownClock extends Component {
 	}
 
 	resetClock(){
+		clearInterval(this.interval)
 		this.setState({
-			minutes: 1,
 			seconds: 0,
+			sessLen: 25,
+			minutes: 25,
 			playState: false,
-			initSeconds: true
+			initSeconds: true,
+			brkLen: 1
 		})
+	}
+
+	incSessLen(){
+		if(this.state.sessLen < 60 && !this.state.playState){
+			this.setState((currentState) => {
+				return{
+					sessLen: currentState.sessLen += 1,
+					initSeconds: true,
+					minutes: this.state.sessLen,
+					seconds: 0
+				}
+			})	
+		} 
+	}
+
+	decSessLen(){
+		if(this.state.sessLen > 1 && !this.state.playState){
+			this.setState((currentState) => {
+				return{
+					sessLen: currentState.sessLen -= 1,
+					initSeconds: true,
+					minutes: this.state.sessLen,
+					seconds: 0
+				}
+			})
+		} 
+		
 	}
 
 
 	render(){
 
-		const { minutes, seconds, } = this.state;
+		const { minutes, seconds, sessLen } = this.state;
 		return(
 			<div style={{ textAlign: 'center'}}>
+
+				<SessionLength 
+					sessLen={sessLen}
+					incSessLen={this.incSessLen}
+					decSessLen={this.decSessLen}
+				/>
 	
 				<h1 id="timer-label">Session</h1>
 				<h1 id="time-left"> 
