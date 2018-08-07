@@ -13,7 +13,7 @@ class CountdownClock extends Component {
 			sessLen: 1,
 			playState: false,
 			initSeconds: true,
-			brkLen: 1
+			brkLen: 1,
 		}
 
 		this.toggleClock = this.toggleClock.bind(this)
@@ -37,6 +37,7 @@ class CountdownClock extends Component {
 				if(this.state.seconds === -59 && this.state.minutes === 0){
 					clearInterval(this.interval)
 					this.handleBreak()
+					return
 				}
 
 				if(this.state.seconds === -60 || this.state.seconds === 0){
@@ -49,11 +50,11 @@ class CountdownClock extends Component {
 				this.setState((currentState) => {
 						return {
 							seconds: currentState.seconds -= 1,
-							initSeconds: false
+							initSeconds: false,
 						}
 					})
 
-			}, 400)
+			}, 200)
 		} else{
 			clearInterval(this.interval);
 		}
@@ -61,19 +62,42 @@ class CountdownClock extends Component {
 
 	handleBreak(){
 		this.setState({
-			minutes: this.state.brkLen,
 			seconds: 0,
+			minutes: 1,
+			sessLen: 1,
+			playState: false,
+			initSeconds: true,
+			brkLen: 1,
 		})
-		setInterval(() => {
-			this.setState((currentState) => {
-					return {
-						seconds: currentState.seconds -= 1,
-						initSeconds: false
-					}
-				})
+		
+		if(!this.state.playState){
 
-			}, 1000)
+			this.interval = setInterval(() => {
+				if(this.state.seconds === -59 && this.state.minutes === 0){
+					clearInterval(this.interval)
+					this.toggleClock()
+					return
+				}
+
+				if(this.state.seconds === -60 || this.state.seconds === 0){
+					this.setState({
+						minutes: this.state.minutes -= 1,
+						seconds: 0,
+					})
+				}
+
+				this.setState((currentState) => {
+						return {
+							seconds: currentState.seconds -= 1,
+							initSeconds: false,
+						}
+					})
+
+			}, 600)
+		} else{
+			clearInterval(this.interval);
 		}
+	}
 			
 	
 
